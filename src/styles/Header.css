@@ -1,0 +1,26 @@
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #e20000;
+}
+.navIz {
+    display: flex;
+    align-items: center;
+    
+}
+.logo{
+    width: 30px;
+    height: auto;
+}
+.logo{
+    margin-right: 30px;
+}
+.inicio{
+    margin-right: 10px;
+}
+
+.productos{
+    margin-right: 10px;
+}
