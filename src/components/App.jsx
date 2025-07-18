@@ -1,10 +1,12 @@
-
+import Layer from '../assets/Layer.png'
 import '../styles/App.css'
 
 function App() {
 
   return (
-    <h1>Indiana Bros</h1>
+    <div className='background'>
+      <img src={Layer} className='layer' alt='Esto es un Layer'/>
+    </div>
   )
 }
 

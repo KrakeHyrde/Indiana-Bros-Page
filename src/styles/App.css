@@ -1,0 +1,10 @@
+.layer{
+    object-fit: contain;
+}
+
+.background{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    background-image: url("../assets/Layer.png");
+}
