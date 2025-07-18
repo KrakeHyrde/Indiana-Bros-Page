@@ -1,15 +1,28 @@
+.pepito{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;  
+}
+
 .header{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #e20000;
+  background-color: transparent;
+}
+button{
+    border-radius: 20px;
+    padding: 10px 10px;
+    background-color: black;
+    color: white;
 }
 .navIz {
     display: flex;
-    align-items: center;
-    
+    align-items: center;    
 }
+
 .logo{
     width: 30px;
     height: auto;
