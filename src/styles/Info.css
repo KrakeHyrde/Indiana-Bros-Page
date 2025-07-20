@@ -1,0 +1,24 @@
+*{
+    background-color: black;
+}
+
+.info {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    place-items: center;
+    text-align: center;  
+    color:white  
+}
+
+.titulo {
+  display: flex;
+  justify-content: center; /* Horizontal */
+  align-items: center;     /* Vertical */
+  height: 50vh;  
+  color:white  
+}
+
+.texto {
+    color:white  
+}
