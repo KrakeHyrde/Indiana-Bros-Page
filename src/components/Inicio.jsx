@@ -1,3 +1,4 @@
+import '../styles/inicio.css'
 const Inicio = () => {
     return (
     <h1>Hola soy inicio</h1>

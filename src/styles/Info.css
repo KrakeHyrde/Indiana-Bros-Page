@@ -1,4 +1,4 @@
-*{
+.info{
     background-color: black;
 }
 
@@ -13,12 +13,23 @@
 
 .titulo {
   display: flex;
-  justify-content: center; /* Horizontal */
-  align-items: center;     /* Vertical */
-  height: 50vh;  
+  
+  justify-content: center;
+  align-items: end;    
+  height: 50%;
   color:white  
 }
 
 .texto {
+    justify-content: center;
+    align-items: center;  
+    display: block;
+    height: 100vh; 
     color:white  
+       
+}
+
+.parrafo {
+    
+
 }
