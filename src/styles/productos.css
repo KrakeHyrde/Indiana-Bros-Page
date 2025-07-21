@@ -1,0 +1,8 @@
+.cart { 
+    display: flex;    
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    height: 50%;
+    background-color: aquamarine;   
+}
