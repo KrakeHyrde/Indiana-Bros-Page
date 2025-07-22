@@ -16,21 +16,20 @@ import '../styles/productos.css'
           <Placeholder.Button variant="primary" xs={6} />
         </Card.Body>
       </Card>*/
-function Productos() {
+function Producto(props) {
   return (
     <div className="cart">
       <Card style={{ width: '18rem' }}>
-        <Card.Img variant="top" src="holder.js/100px180" />
+        <Card.Img className='imagen' variant="top" src={props.img} alt='Portada de Videojuego'/>
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+          <Card.Title className='title'>{props.title}</Card.Title>
+          <Card.Text className='text'>
+            {props.text}
           </Card.Text>
-          <Button variant="primary">Go somewhere</Button>
+          <Button variant="primary">Buy</Button>
         </Card.Body>
       </Card>
     </div>
   );
 }
-export {Productos}
+export {Producto}

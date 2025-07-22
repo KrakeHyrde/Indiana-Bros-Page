@@ -3,7 +3,6 @@ import logo from'../assets/logo.jpeg'
 function Header() {
     return(
         <header className='pepito'>
-
             <nav className='header'>
                 <div className='navIz'>
                     <a href="/"><img src={logo} className='logo' alt='Logo'/></a>
@@ -17,6 +16,5 @@ function Header() {
             </nav>
         </header>
     )
-
 }
 export {Header}

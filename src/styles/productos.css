@@ -1,8 +1,12 @@
 .cart { 
-    display: flex;    
+    display: grid;    
+    place-items: center;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    height: 50%;
     background-color: aquamarine;   
+}
+
+.imagen {
+    max-width: 100px;
+    height: 100px;
 }
