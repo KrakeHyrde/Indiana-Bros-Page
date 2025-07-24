@@ -1,0 +1,23 @@
+.decision{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: brown;
+}
+
+.inicia {
+    background-color: aqua;
+    display:grid;
+    margin: 20px 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.register {
+    background-color: aqua;
+    display: grid;
+    margin: 20px 20px;
+    justify-content: center;
+    align-items: center;
+}
