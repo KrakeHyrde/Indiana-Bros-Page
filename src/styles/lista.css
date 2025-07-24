@@ -1,4 +1,20 @@
-.tommy {
-    height: 400px;
-    width: auto;
+.productos-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
+
+.lista-productos {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.tommy, .poe, .pillars {
+    background-color: brown;
+    padding: 10px;
+    border-radius: 10px;
+}
+
