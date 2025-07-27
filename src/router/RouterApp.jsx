@@ -5,13 +5,14 @@ import {LoginRegister, Register, Login} from "../components/Login-Register"
 import {Info} from "../components/Info"
 import App from "../components/App"
 import { ListadeProductos } from "../components/ListadeProductos"
+import { Dashboard } from "../components/Dashboard"
 
 const RouterApp = () => {
     return (
         <BrowserRouter>
             <Routes>           
                 <Route path="/" element = {<App/>}/>    
-                <Route path="/inicio" element= {<Inicio/>}/>
+                <Route path="/dashboard" element= {<Dashboard/>} />         
                 <Route path="/productos" element={<ListadeProductos/>}/>
                 <Route path="/loginregister" element={<LoginRegister/>}/>
                 <Route path="/login" element={<Login/>}/>

@@ -2,7 +2,9 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Placeholder from 'react-bootstrap/Placeholder';
 import '../styles/productos.css'
+import { useState } from 'react';
 function Producto(props) {
+  const [user, setUser] = useState(false)
   return (
     <div className="cart">
       <div className={`cart ${props.className}`}>
@@ -13,7 +15,13 @@ function Producto(props) {
             <Card.Text className='text'>
               {props.text}
             </Card.Text>
-            <Button variant="primary">Buy</Button>
+            {
+              user && <div className='botonCard'>
+                <Button className="modifybu" variant="primary">Modify</Button>
+                <Button className="buybu" variant="primary">Buy</Button>
+                <Button className="deletebu" variant="primary">Delete</Button>
+              </div>
+            }
           </Card.Body>
         </Card>
       </div>

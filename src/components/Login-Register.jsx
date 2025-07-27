@@ -43,7 +43,7 @@ const Register = () => {
   }
 
   return (
-    <>
+    <div className="reRegister">
       <h1>Registrate</h1>
 
       <section>
@@ -87,13 +87,13 @@ const Register = () => {
           success && <p style={{ color: "green" }}>{success}</p>
         }
       </section>
-    </>
+    </div>
   )
 }
 
 const Login = () =>{
     return(
-        <div>
+        <div className="reLogin">
             <h1>Inicia sesión</h1>
             <section>
                 <form>
