@@ -1,13 +1,18 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import "../styles/loginregi.css"
+import fondo from "../assets/FondoInicio.png"
 
 const LoginRegister = () => {
     return (
+      <>
+        
         <div className="decision">
+            <img src={fondo} className="fondoIn" alt="fondo del inicio"/>
             <button className="inicia"><a href="/login">Inicia Secion</a></button>
             <button className="register"><a href="register">Registrate</a></button>
         </div>
+      </>
     )
 }
 
@@ -44,6 +49,7 @@ const Register = () => {
 
   return (
     <div className="reRegister">
+      <img src={fondo} className="fondoIn" alt="fondo del inicio"/>
       <h1>Registrate</h1>
 
       <section>
@@ -94,6 +100,7 @@ const Register = () => {
 const Login = () =>{
     return(
         <div className="reLogin">
+          <img src={fondo} className="fondoIn" alt="fondo del inicio"/>
             <h1>Inicia sesión</h1>
             <section>
                 <form>
