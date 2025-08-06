@@ -2,6 +2,7 @@
 import '../styles/productos.css'
 import { useEffect, useState } from "react"
 import { useAuth } from "../context/UserContext"
+import { Card, CardBody, CardGroup } from 'react-bootstrap'
 function Producto(props) {
       
   const [products, setProducts] = useState([])
@@ -126,23 +127,27 @@ function Producto(props) {
           </section>
         }
 
-        <div className='cart'>
-          {
-            products.map((product) => <div key={product.id} className='card'>
-              <h2 key={product.id}>{product.title}</h2>
-              <img className='imagen' width="80px" src={product.image} alt={`Imagen de ${product.title}`} />
-              <p>${product.price}</p>
-              <p>{product.description}</p>
-              <p><strong>{product.category}</strong></p>
-              {
-                user && <div>
-                  <button onClick={() => handleOpenEdit(product)}>Actualizar</button>
-                  <button onClick={() => handleDelete(product.id)}>Borrar</button>
-                </div>
-              }
-            </div>)
-          }
-        </div>
+          <div className='cart'>
+          <CardGroup className='wrapper'>
+            {             
+              products.map((product) => <Card style={{ width: '18rem' }}key={product.id} className='card'>
+                <img className='imagen' src={product.image} alt={`Imagen de ${product.title}`} />
+                <Card.Body>
+                  <h2 className='title' key={product.id}>{product.title}</h2>
+                  <p>${product.price}</p>
+                  <p className='text'>{product.description}</p>
+                  <p><strong>{product.category}</strong></p>
+                  {
+                    user && <div>
+                      <button className='buttonProduct'onClick={() => handleOpenEdit(product)}>Actualizar</button>
+                      <button className='buttonProduct'onClick={() => handleDelete(product.id)}>Borrar</button>
+                    </div>
+                  }
+                </Card.Body>
+              </Card>)             
+            }
+          </CardGroup>
+          </div>
     </>
   )
     
@@ -173,16 +178,3 @@ export {Producto}
       </div>
     </div>
   );*/
-      /*<Card style={{ width: '18rem' }}>
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-          <Placeholder as={Card.Title} animation="glow">
-            <Placeholder xs={6} />
-          </Placeholder>
-          <Placeholder as={Card.Text} animation="glow">
-            <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
-            <Placeholder xs={6} /> <Placeholder xs={8} />
-          </Placeholder>
-          <Placeholder.Button variant="primary" xs={6} />
-        </Card.Body>
-      </Card>*/

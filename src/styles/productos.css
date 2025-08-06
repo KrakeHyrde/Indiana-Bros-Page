@@ -1,3 +1,9 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+}
+
 .cart {
     display: flex;
     flex-direction: column; 
@@ -6,14 +12,16 @@
     background-color: aquamarine;
     padding: 15px;
     border-radius: 10px;
-    text-align: center;
+    text-align: center; 
 }
 
-.cart .card {
-    display: flex;
+.card {
+    display: flex;    
     flex-direction: column;
     align-items: center;
     background-color: brown; 
+    padding: 15px;
+    border-radius: 10px;
     border: none;
 }
 
@@ -28,14 +36,10 @@
 }
 
 .imagen {
-    max-width: 200px;
+    max-width: 150px;
     height: auto;
 }
 
-.botonCard  {
+.buttonProduct{
     margin: 10px 10px;
-}
-
-.buybu {
-    margin: 0px 20px;
 }
