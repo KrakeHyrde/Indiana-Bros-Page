@@ -4,6 +4,12 @@
     gap: 2rem;
 }
 
+.objetoProductos {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 50px;
+}
 .cart {
     display: flex;
     flex-direction: column; 
@@ -42,4 +48,10 @@
 
 .buttonProduct{
     margin: 10px 10px;
+}
+
+.buscador{
+    display: flex;
+    padding: 500px;
+    margin: 500px;
 }

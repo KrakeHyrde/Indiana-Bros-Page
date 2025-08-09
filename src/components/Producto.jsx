@@ -1,6 +1,6 @@
 
 import '../styles/productos.css'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { useAuth } from "../context/UserContext"
 import { Card, CardBody, CardGroup } from 'react-bootstrap'
 function Producto(props) {
@@ -14,6 +14,20 @@ function Producto(props) {
   const [categoryEdit, setCategoryEdit] = useState("")
   const [imageEdit, setImageEdit] = useState("")
   const [user, setUser] = useState(true)
+  const [q, setQ] = useState("");
+
+// normaliza tildes y minúsculas
+const norm = (s) => s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
+
+// resultados filtrados (mientras escribe)
+const filtered = useMemo(() => {
+  const needle = norm(q.trim());
+  if (!needle) return products;
+  return products.filter(p =>
+    norm(p.title || "").includes(needle) ||
+    norm(p.category || "").includes(needle)
+  );
+}, [q, products]);
   // simulando existencia del usuario, proximamente este estado será global
   
 
@@ -86,8 +100,24 @@ function Producto(props) {
   }
 
   return (
-    <>
-
+    <div className='objetoProductos'>
+        <div className='buscador' style={{ maxWidth: 520, margin: "12px auto 0", padding: "0 12px" }}>
+          <input
+            type="text"
+            placeholder="Buscar productos por nombre o categoría..."
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            aria-label="Buscar productos"
+            style={{
+              width: "100%",
+              padding: "10px 12px",
+              fontSize: "1rem",
+              border: "1px solid #ddd",
+              borderRadius: 8,
+              outline: "none"
+            }}
+          />
+        </div>
         {
           showPopup && <section className="popup-edit">
             <h2>Editando producto.</h2>
@@ -129,26 +159,34 @@ function Producto(props) {
 
           <div className='cart'>
           <CardGroup className='wrapper'>
-            {             
-              products.map((product) => <Card style={{ width: '18rem' }}key={product.id} className='card'>
-                <img className='imagen' src={product.image} alt={`Imagen de ${product.title}`} />
-                <Card.Body>
-                  <h2 className='title' key={product.id}>{product.title}</h2>
-                  <p>${product.price}</p>
-                  <p className='text'>{product.description}</p>
-                  <p><strong>{product.category}</strong></p>
-                  {
-                    user && <div>
-                      <button className='buttonProduct'onClick={() => handleOpenEdit(product)}>Actualizar</button>
-                      <button className='buttonProduct'onClick={() => handleDelete(product.id)}>Borrar</button>
-                    </div>
-                  }
-                </Card.Body>
-              </Card>)             
-            }
+           {
+  filtered.length === 0 ? (
+    <p style={{ textAlign: "center", width: "100%", marginTop: 16 }}>
+      No se encontraron resultados para “{q}”.
+    </p>
+  ) : (
+    filtered.map((product) => (
+      <Card style={{ width: '18rem' }} key={product.id} className='card'>
+        <img className='imagen' src={product.image} alt={`Imagen de ${product.title}`} />
+        <Card.Body>
+          <h2 className='title'>{product.title}</h2>
+          <p>${product.price}</p>
+          <p className='text'>{product.description}</p>
+          <p><strong>{product.category}</strong></p>
+          {user && (
+            <div>
+              <button className='buttonProduct' onClick={() => handleOpenEdit(product)}>Actualizar</button>
+              <button className='buttonProduct' onClick={() => handleDelete(product.id)}>Borrar</button>
+            </div>
+          )}
+        </Card.Body>
+      </Card>
+    ))
+  )
+}
           </CardGroup>
           </div>
-    </>
+    </div>
   )
     
   
