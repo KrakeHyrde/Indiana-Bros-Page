@@ -11,6 +11,17 @@ const Info = () => {
                     <p>ofrecer calidad al jugador</p>
                 </div>
             </div>
+
+            <div className='textoDirigido'>
+                <h1 className='titulo'>Nuestro Publico</h1>
+                <p>Buscamos llegar a cualquier persona que le gusten</p>
+                <p>los videojuegos de puzzles, investigacion o historia a invertigar</p>
+            </div>
+            <div className='textoTec'>
+                <h1 className='titulo'>Tecnologias</h1>
+                <p>Para esta pagina se utilizo</p>
+                <p>react, bootstrap, router dom, vite y versel</p>
+            </div>
         </div>
     )
 }
