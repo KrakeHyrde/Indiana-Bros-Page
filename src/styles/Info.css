@@ -1,32 +1,29 @@
-.info{
+.information{
     background-color: black;
 }
 
-.info {
+.information {
     display: grid;
     justify-content: center;
     align-items: center;
     place-items: center;
     text-align: center;  
+    height: 100vh;
     color:white  
 }
 
-.titulo {
-  display: flex;
-  
+.titulo {  
   justify-content: center;
   align-items: end;    
-  height: 50%;
   color:white  
 }
 
 .texto {
-    justify-content: center;
-    align-items: center;  
     display: block;
-    height: 100vh; 
-    color:white  
-       
+    justify-content: center;  
+
+    align-items: center;  
+    color:white         
 }
 
 .parrafo {

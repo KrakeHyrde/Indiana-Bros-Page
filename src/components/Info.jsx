@@ -1,7 +1,7 @@
 import '../styles/Info.css'
 const Info = () => {
     return (
-        <div className='info'>
+        <div className='information'>
             <div className='texto'>
                 <h1 className='titulo'>Sobre Nosotros</h1>
                 <div className='parrafo'>
@@ -14,13 +14,17 @@ const Info = () => {
 
             <div className='textoDirigido'>
                 <h1 className='titulo'>Nuestro Publico</h1>
+                <div className='parrafo'>
                 <p>Buscamos llegar a cualquier persona que le gusten</p>
                 <p>los videojuegos de puzzles, investigacion o historia a invertigar</p>
+                </div>
             </div>
             <div className='textoTec'>
                 <h1 className='titulo'>Tecnologias</h1>
+                <div className='parrafo'>
                 <p>Para esta pagina se utilizo</p>
                 <p>react, bootstrap, router dom, vite y versel</p>
+                </div>
             </div>
         </div>
     )
