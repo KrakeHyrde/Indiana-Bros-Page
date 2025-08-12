@@ -1,12 +1,12 @@
-
 import '../styles/productos.css'
 import { useEffect, useState, useMemo } from "react"
 import { useAuth } from "../context/UserContext"
 import { Card, CardBody, CardGroup } from 'react-bootstrap'
+import Offcanvas from 'react-bootstrap/Offcanvas';
 function Producto(props) {
       
   const [products, setProducts] = useState([])
-  const [showPopup, setShowPopup] = useState(null)
+  const [show, setShow] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null)
   const [titleEdit, setTitleEdit] = useState("")
   const [priceEdit, setPriceEdit] = useState("")
@@ -16,10 +16,9 @@ function Producto(props) {
   const [user, setUser] = useState(true)
   const [q, setQ] = useState("");
 
-// normaliza tildes y minúsculas
+
 const norm = (s) => s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-// resultados filtrados (mientras escribe)
 const filtered = useMemo(() => {
   const needle = norm(q.trim());
   if (!needle) return products;
@@ -28,7 +27,7 @@ const filtered = useMemo(() => {
     norm(p.category || "").includes(needle)
   );
 }, [q, products]);
-  // simulando existencia del usuario, proximamente este estado será global
+
   
 
   const fetchingProducts = async () => {
@@ -37,7 +36,7 @@ const filtered = useMemo(() => {
     setProducts(data)
   }
 
-  // El array vacío (dependencias) espera a que ejecute el return del jsx. Si tiene algo, useEffect se va a ejecutar cada vez que se modifique lo que este dentro de la dependencia.
+ 
   useEffect(() => {
     fetchingProducts()
   }, [])
@@ -47,12 +46,13 @@ const filtered = useMemo(() => {
 
     if (response.ok) {
       setProducts(prevProduct => prevProduct.filter((product) => product.id != id))
-      // fetchingProducts()
+
     }
   }
-
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const handleOpenEdit = (product) => {
-    setShowPopup(true)
+    handleShow();
     setProductToEdit(product)
     setTitleEdit(product.title)
     setPriceEdit(product.price)
@@ -61,7 +61,7 @@ const filtered = useMemo(() => {
     setImageEdit(product.image)
   }
 
-  // petición al backend mediante fetch para modificar-> método PATCH / PUT https://fakeproductapi.com/products
+
   const handleUpdate = async (e) => {
     e.preventDefault()
 
@@ -91,9 +91,8 @@ const filtered = useMemo(() => {
               ? data
               : product
           ))
-        // fetchingProducts()
       }
-      setShowPopup(false)
+      handleClose();
     } catch (error) {
       console.log(error)
     }
@@ -119,71 +118,75 @@ const filtered = useMemo(() => {
           />
         </div>
         {
-          showPopup && <section className="popup-edit">
-            <h2>Editando producto.</h2>
-            <button onClick={() => setShowPopup(null)}>Cerrar</button>
-            <form onSubmit={handleUpdate}>
-              <input
-                type="text"
-                placeholder="Ingrese el titulo"
-                value={titleEdit}
-                onChange={(e) => setTitleEdit(e.target.value)}
-              />
-              <input
-                type="number"
-                placeholder="Ingrese el precio"
-                value={priceEdit}
-                onChange={(e) => setPriceEdit(e.target.value)}
-              />
-              <textarea
-                placeholder="Ingrese la descripción"
-                value={descriptionEdit}
-                onChange={(e) => setDescriptionEdit(e.target.value)}
-              ></textarea>
-              <input
-                type="text"
-                placeholder="Ingrese la categoria"
-                value={categoryEdit}
-                onChange={(e) => setCategoryEdit(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Ingrese la URL de la imagen"
-                value={imageEdit}
-                onChange={(e) => setImageEdit(e.target.value)}
-              />
-              <button>Actualizar</button>
-            </form>
-          </section>
+          handleShow && <Offcanvas show={show} onHide={handleClose}>
+
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title>Editando Producto</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <form onSubmit={handleUpdate}>
+                <input
+                  type="text"
+                  placeholder="Ingrese el titulo"
+                  value={titleEdit}
+                  onChange={(e) => setTitleEdit(e.target.value)}
+                />
+                <input
+                  type="number"
+                  placeholder="Ingrese el precio"
+                  value={priceEdit}
+                  onChange={(e) => setPriceEdit(e.target.value)}
+                />
+                <textarea
+                  placeholder="Ingrese la descripción"
+                  value={descriptionEdit}
+                  onChange={(e) => setDescriptionEdit(e.target.value)}
+                ></textarea>
+                <input
+                  type="text"
+                  placeholder="Ingrese la categoria"
+                  value={categoryEdit}
+                  onChange={(e) => setCategoryEdit(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Ingrese la URL de la imagen"
+                  value={imageEdit}
+                  onChange={(e) => setImageEdit(e.target.value)}
+                />
+                <button>Actualizar</button>
+              </form>
+            </Offcanvas.Body>
+          </Offcanvas>
         }
 
           <div className='cart'>
           <CardGroup className='wrapper'>
            {
-  filtered.length === 0 ? (
-    <p style={{ textAlign: "center", width: "100%", marginTop: 16 }}>
-      No se encontraron resultados para “{q}”.
-    </p>
-  ) : (
-    filtered.map((product) => (
-      <Card style={{ width: '18rem' }} key={product.id} className='card'>
-        <img className='imagen' src={product.image} alt={`Imagen de ${product.title}`} />
-        <Card.Body>
-          <h2 className='title'>{product.title}</h2>
-          <p>${product.price}</p>
-          <p className='text'>{product.description}</p>
-          <p><strong>{product.category}</strong></p>
-          {user && (
-            <div>
-              <button className='buttonProduct' onClick={() => handleOpenEdit(product)}>Actualizar</button>
-              <button className='buttonProduct' onClick={() => handleDelete(product.id)}>Borrar</button>
-            </div>
-          )}
-        </Card.Body>
-      </Card>
-    ))
-  )
-}
+              filtered.length === 0 ? (
+                <p style={{ textAlign: "center", width: "100%", marginTop: 16 }}>
+                  No se encontraron resultados para “{q}”.
+                </p>
+              ) : (
+                filtered.map((product) => (
+                  <Card style={{ width: '18rem' }} key={product.id} className='card'>
+                    <img className='imagen' src={product.image} alt={`Imagen de ${product.title}`} />
+                    <Card.Body>
+                      <h2 className='title'>{product.title}</h2>
+                      <p>${product.price}</p>
+                      <p className='text'>{product.description}</p>
+                      <p><strong>{product.category}</strong></p>
+                      {user && (
+                        <div>
+                          <button className='buttonProduct' onClick={() => handleOpenEdit(product)}>Actualizar</button>
+                          <button className='buttonProduct' onClick={() => handleDelete(product.id)}>Borrar</button>
+                        </div>
+                      )}
+                    </Card.Body>
+                  </Card>
+                ))
+              )
+            }
           </CardGroup>
           </div>
     </div>

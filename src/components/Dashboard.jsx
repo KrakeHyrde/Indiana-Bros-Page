@@ -1,14 +1,11 @@
 import { useState } from "react"
-
-
+import  "../styles/dashboard.css"
 const Dashboard = () => {
   const [name, setName] = useState("")
   const [price, setPrice] = useState("")
   const [description, setDescription] = useState("")
   const [product, setProduct] = useState(null)
   const [error, setError] = useState(null)
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -33,7 +30,6 @@ const Dashboard = () => {
       image: ""
     }
 
-    // petición al backend mediante fetch -> método POST https://fakeproductapi.com/products
     const response = await fetch("https://fakestoreapi.com/products", {
       method: "POST",
       headers: {
@@ -50,43 +46,41 @@ const Dashboard = () => {
   }
 
   return (
-    <>
-      <h1>Panel de Administración</h1>
+    <div className="dashboard-container">
+      <h1 className="dashboard-title">Panel de Administración</h1>
 
-      <section>
-        <h2>Cargar nuevo producto</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
+      <section className="dashboard-section">
+        <h2 className="dashboard-subtitle">Cargar nuevo producto</h2>
+        <form className="dashboard-form" onSubmit={handleSubmit}>
+          <div className="dashboard-field">
             <label>Nombre del producto:</label>
-            <input type="text" name="nombre" onChange={(e) => setName(e.target.value)} value={name} />
+            <input type="text" onChange={(e) => setName(e.target.value)} value={name} />
           </div>
 
-          <div>
+          <div className="dashboard-field">
             <label>Precio:</label>
-            <input type="number" name="precio" onChange={(e) => setPrice(e.target.value)} value={price} />
+            <input type="number" onChange={(e) => setPrice(e.target.value)} value={price} />
           </div>
 
-          <div>
+          <div className="dashboard-field">
             <label>Descripción:</label>
-            <textarea name="descripcion" rows="4" onChange={(e) => setDescription(e.target.value)} value={description} />
+            <textarea rows="4" onChange={(e) => setDescription(e.target.value)} value={description} />
           </div>
 
-          {
-            error && <p className="error">{error}</p>
-          }
+          {error && <p className="dashboard-error">{error}</p>}
 
-          <button>Guardar producto</button>
+          <button className="dashboard-button">Guardar producto</button>
         </form>
 
-        {
-          product && <div>
+        {product && (
+          <div className="dashboard-product">
             <h3>{product.title}</h3>
             <p>${product.price}</p>
             <p>{product.description}</p>
           </div>
-        }
+        )}
       </section>
-    </>
+    </div>
   )
 }
 
