@@ -1,5 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { UserProvider } from './context/UserContext.jsx'
+import { ProductsProvider } from './context/ProductContext.jsx'
 import './styles/index.css'
 import ReactDOM from 'react-dom/client'
 import App from './components/App.jsx'
@@ -11,8 +13,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 ReactDOM.createRoot(document.getElementById('root')).render(<App />)
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>    
-    <Header/>   
-    <RouterApp/>
+  <StrictMode>
+    <UserProvider>
+      <ProductsProvider>
+        <RouterApp/>
+      </ProductsProvider>
+    </UserProvider>
   </StrictMode>,
 )

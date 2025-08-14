@@ -6,10 +6,12 @@ import {Info} from "../components/Info"
 import App from "../components/App"
 import { ListadeProductos } from "../components/ListadeProductos"
 import { Dashboard } from "../components/Dashboard"
+import { Header } from "../components/Header"
 
 const RouterApp = () => {
     return (
         <BrowserRouter>
+            <Header/>
             <Routes>           
                 <Route path="/" element = {<App/>}/>    
                 <Route path="/dashboard" element= {<Dashboard/>} />         

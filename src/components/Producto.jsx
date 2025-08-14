@@ -1,106 +1,87 @@
-import '../styles/productos.module.css'
-import { useEffect, useState, useMemo } from "react"
-import { useAuth } from "../context/UserContext"
-import { Card, CardBody, CardGroup } from 'react-bootstrap'
+import styles from '../styles/productos.module.css'
+import { useEffect, useState, useMemo, use } from "react"
+import { useAuth }  from "../context/UserContext"
+import { Button, Card, CardGroup } from 'react-bootstrap'
 import Offcanvas from 'react-bootstrap/Offcanvas';
-function Producto(props) {
-      
-  const [products, setProducts] = useState([])
+import { Form } from 'react-bootstrap';
+import { useProducts } from '../context/ProductContext';
+import * as formik from 'formik';
+import * as yup from 'yup';
+
+function Producto() {
   const [show, setShow] = useState(false);
   const [productToEdit, setProductToEdit] = useState(null)
-  const [titleEdit, setTitleEdit] = useState("")
-  const [priceEdit, setPriceEdit] = useState("")
-  const [descriptionEdit, setDescriptionEdit] = useState("")
-  const [categoryEdit, setCategoryEdit] = useState("")
-  const [imageEdit, setImageEdit] = useState("")
-  const [user, setUser] = useState(true)
+  //const [user, setUser] = useState(true)
   const [q, setQ] = useState("");
 
+  const { UpdateProduct, GetProducts, DeleteProduct, products } = useProducts()
+  const {user}  = useAuth()
+  const { Formik } = formik;
+  const norm = (s) => s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-const norm = (s) => s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
-
-const filtered = useMemo(() => {
+  const filtered = useMemo(() => {
   const needle = norm(q.trim());
   if (!needle) return products;
   return products.filter(p =>
     norm(p.title || "").includes(needle) ||
     norm(p.category || "").includes(needle)
-  );
-}, [q, products]);
+  );}, [q, products]);
 
   
-
-  const fetchingProducts = async () => {
-    const response = await fetch("https://fakestoreapi.com/products", { method: "GET" })
-    const data = await response.json()
-    setProducts(data)
-  }
-
- 
   useEffect(() => {
-    fetchingProducts()
-  }, [])
+    GetProducts()
+  }, [products])
 
   const handleDelete = async (id) => {
-    const response = await fetch(`https://fakestoreapi.com/products/${id}`, { method: "DELETE" })
+    
+    const response = await DeleteProduct(id); 
 
-    if (response.ok) {
-      setProducts(prevProduct => prevProduct.filter((product) => product.id != id))
-
+    if (response) {
+      alert("Producto eliminado correctamente")
     }
+    
   }
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleOpenEdit = (product) => {
     handleShow();
-    setProductToEdit(product)
-    setTitleEdit(product.title)
-    setPriceEdit(product.price)
-    setDescriptionEdit(product.description)
-    setCategoryEdit(product.category)
-    setImageEdit(product.image)
+    setProductToEdit(product);
   }
 
 
-  const handleUpdate = async (e) => {
-    e.preventDefault()
-
+  const handleUpdate = async (values, { setSubmitting }) => {
+    //productToEdit = 
     const updatedProduct = {
       id: productToEdit.id,
-      title: titleEdit,
-      price: Number(priceEdit),
-      description: descriptionEdit,
-      category: categoryEdit,
-      image: imageEdit
+      title: values.titleEdit,
+      price: Number(values.priceEdit),
+      description: values.descriptionEdit,
+      category: values.categoryEdit,
+      image: productToEdit.image,
     }
 
     try {
-      const response = await fetch(`https://fakestoreapi.com/products/${productToEdit.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(updatedProduct)
-      })
 
-      if (response.ok) {
-        const data = await response.json()
-        setProducts(prevProduct =>
-          prevProduct.map((product) =>
-            product.id === productToEdit.id
-              ? data
-              : product
-          ))
+      const response = await UpdateProduct( productToEdit.id, updatedProduct);
+      
+      if (response) {
+        alert("Producto actualizado correctamente")
+        handleClose();
       }
-      handleClose();
     } catch (error) {
       console.log(error)
     }
   }
+  const schema = yup.object().shape({
+    titleEdit: yup.string().required("Necesitar ingresar un título"),
+    priceEdit: yup.number().required("Necesitar ingresar un precio").positive("El precio debe ser positivo").min(0, "El precio no puede ser negativo"),
+    descriptionEdit: yup.string().required("Necesitar ingresar una descripción"),
+    categoryEdit: yup.string().required("Necesitar ingresar una categoría"),
+  });
 
   return (
-    <div className='objetoProductos'>
-        <div className='buscador' style={{ maxWidth: 520, margin: "12px auto 0", padding: "0 12px" }}>
+    <div className={styles.objetoProductos}>
+        <div className={styles.buscador}>
           <input
             type="text"
             placeholder="Buscar productos por nombre o categoría..."
@@ -118,104 +99,112 @@ const filtered = useMemo(() => {
           />
         </div>
         {
-          handleShow && <Offcanvas show={show} onHide={handleClose}>
-
-            <Offcanvas.Header closeButton>
+          show && 
+          <Offcanvas className='flex-column' show={show} onHide={handleClose}>
+            <Offcanvas.Header closeButton className='d-flex justify-content-center align-items-center'>
               <Offcanvas.Title>Editando Producto</Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
-              <form onSubmit={handleUpdate}>
-                <input
-                  type="text"
-                  placeholder="Ingrese el titulo"
-                  value={titleEdit}
-                  onChange={(e) => setTitleEdit(e.target.value)}
-                />
-                <input
-                  type="number"
-                  placeholder="Ingrese el precio"
-                  value={priceEdit}
-                  onChange={(e) => setPriceEdit(e.target.value)}
-                />
-                <textarea
-                  placeholder="Ingrese la descripción"
-                  value={descriptionEdit}
-                  onChange={(e) => setDescriptionEdit(e.target.value)}
-                ></textarea>
-                <input
-                  type="text"
-                  placeholder="Ingrese la categoria"
-                  value={categoryEdit}
-                  onChange={(e) => setCategoryEdit(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Ingrese la URL de la imagen"
-                  value={imageEdit}
-                  onChange={(e) => setImageEdit(e.target.value)}
-                />
-                <button>Actualizar</button>
-              </form>
+              <Formik
+                validationSchema={schema}
+                onSubmit={handleUpdate}
+                initialValues={{
+                  titleEdit: productToEdit?.title || '',
+                  priceEdit: productToEdit?.price || '',
+                  descriptionEdit: productToEdit?.description || '',
+                  categoryEdit: productToEdit?.category || '',
+                  imageEdit: productToEdit?.image || '',
+                }}
+              >
+                {({ handleSubmit, handleChange, handleBlur, touched, values, errors }) => (
+                  <Form onSubmit={handleSubmit} noValidate className='flex-column justify-content-center align-items-center m-3'>
+                    <Form.Group className="mb-3" controlId="formTitle">
+                      <Form.Control
+                        type="text"
+                        name="titleEdit"
+                        placeholder="Ingrese el titulo"
+                        onBlur={handleBlur}
+                        value={values.titleEdit}
+                        onChange={handleChange}
+                        isInvalid={touched.titleEdit && !!errors.titleEdit}
+                      /> 
+                      <Form.Control.Feedback type="invalid">{errors.titleEdit}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formPrice">
+                      <Form.Control 
+                        type="number"
+                        name="priceEdit"
+                        onBlur={handleBlur}
+                        placeholder="Ingrese el precio"
+                        value={values.priceEdit}
+                        onChange={handleChange}
+                        isInvalid={touched.priceEdit && !!errors.priceEdit}
+                      />
+                      <Form.Control.Feedback type="invalid">{errors.priceEdit}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formDescription">
+                      <Form.Control
+                        as='textarea'
+                        name="descriptionEdit"
+                        onBlur={handleBlur}
+                        placeholder="Ingrese la descripción"
+                        value={values.descriptionEdit}
+                        onChange={handleChange}
+                        isInvalid={touched.descriptionEdit && !!errors.descriptionEdit}
+                      />
+                      <Form.Control.Feedback type="invalid">{errors.descriptionEdit}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formCategory">
+                      <Form.Control
+                        type='text'
+                        name="categoryEdit"
+                        onBlur={handleBlur}
+                        placeholder="Ingrese la categoria"
+                        value={values.categoryEdit}
+                        onChange={handleChange}
+                        isInvalid={touched.categoryEdit && !!errors.categoryEdit}
+                      />
+                      <Form.Control.Feedback type="invalid">{errors.categoryEdit}</Form.Control.Feedback>
+                    </Form.Group>
+                    <Button type='submit'>Actualizar</Button>
+                  </Form>
+                )}
+              </Formik>
             </Offcanvas.Body>
           </Offcanvas>
         }
 
-          <div className='cart'>
-          <CardGroup className='wrapper'>
-           {
-              filtered.length === 0 ? (
-                <p style={{ textAlign: "center", width: "100%", marginTop: 16 }}>
-                  No se encontraron resultados para “{q}”.
-                </p>
-              ) : (
-                filtered.map((product) => (
-                  <Card style={{ width: '18rem' }} key={product.id} className='card'>
-                    <img className='imagen' src={product.image} alt={`Imagen de ${product.title}`} />
-                    <Card.Body>
-                      <h2 className='title'>{product.title}</h2>
-                      <p>${product.price}</p>
-                      <p className='text'>{product.description}</p>
-                      <p><strong>{product.category}</strong></p>
-                      {user && (
-                        <div>
-                          <button className='buttonProduct' onClick={() => handleOpenEdit(product)}>Actualizar</button>
-                          <button className='buttonProduct' onClick={() => handleDelete(product.id)}>Borrar</button>
-                        </div>
-                      )}
-                    </Card.Body>
-                  </Card>
-                ))
-              )
-            }
-          </CardGroup>
+        <div className={styles.cart}>
+          <div className={styles.wrapper}>
+            {filtered.length === 0 ? (
+              <p style={{ textAlign: "center", width: "100%", marginTop: 16 }}>
+                No se encontraron resultados para “{q}”.
+              </p>
+            ) : (
+              filtered.map(product => (
+                <Card key={product.id} className={styles.productCard}>
+                  <Card.Img className={styles.imagen} src={product.image} alt={`Imagen de ${product.title}`} />
+                  <Card.Header className={styles.title}>{product.title}</Card.Header>
+                  <Card.Body>
+                    <Card.Subtitle>Precio: ${product.price}</Card.Subtitle>
+                    <Card.Subtitle>Categoría: <strong>{product.category}</strong></Card.Subtitle>
+                    <Card.Text className={styles.text}>{product.description}</Card.Text>
+
+                    {user && (
+                      <div /* footer propio, sin utilidades bootstrap */>
+                        <button className={styles.buttonProduct} onClick={() => handleOpenEdit(product)}>Actualizar</button>
+                        <button className={styles.buttonProduct} onClick={() => handleDelete(product.id)}>Borrar</button>
+                      </div>
+                    )}
+                  </Card.Body>
+                </Card>
+              ))
+            )}
           </div>
+        </div>
     </div>
   )
     
   
 }
 export {Producto}
-
-  /*const [user, setUser] = useState(true)
-  return (
-    <div className="cart">
-      <div className={`cart ${props.className}`}>
-        <Card style={{ width: '18rem' }}>
-          <Card.Img className='imagen' variant="top" src={props.img} alt='Portada de Videojuego'/>
-          <Card.Body>
-            <Card.Title className='title'>{props.title}</Card.Title>
-            <Card.Text className='text'>
-              {props.text}
-            </Card.Text>
-            {
-              user && <div className='botonCard'>
-                <Button className="modifybu" variant="primary">Modify</Button>
-                <Button className="buybu" variant="primary">Buy</Button>
-                <Button className="deletebu" variant="primary">Delete</Button>
-              </div>
-            }
-          </Card.Body>
-        </Card>
-      </div>
-    </div>
-  );*/
