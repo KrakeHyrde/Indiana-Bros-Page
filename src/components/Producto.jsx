@@ -191,7 +191,7 @@ function Producto() {
                     <Card.Text className={styles.text}>{product.description}</Card.Text>
 
                     {user && (
-                      <div /* footer propio, sin utilidades bootstrap */>
+                      <div>
                         <button className={styles.buttonProduct} onClick={() => handleOpenEdit(product)}>Actualizar</button>
                         <button className={styles.buttonProduct} onClick={() => handleDelete(product.id)}>Borrar</button>
                       </div>

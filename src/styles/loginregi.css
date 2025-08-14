@@ -4,11 +4,11 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #7b2e2e; /* rojo oscuro más estilizado */
+    background-color: #7b2e2e; 
     gap: 40px;
 }
 
-/* Botones principales */
+
 .inicia, .register {
     background-color: #00e1e1;
     border: none;
@@ -28,7 +28,7 @@
     cursor: pointer;
 }
 
-/* FORMULARIO DE LOGIN Y REGISTER */
+
 
 .reLogin, .reRegister {
     display: flex;

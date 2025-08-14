@@ -1,4 +1,4 @@
-.dashboard-container {
+.dashboardContainer {
   margin: 0;
   height: 100vh; 
   display: flex;
@@ -8,8 +8,8 @@
   background-image: url("../assets/FondoInicio.png");
 }
 
-.dashboard-section {
-  background-color: #ff0000;
+.dashboardSection {
+  background-color: #470909;
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -17,26 +17,26 @@
   text-align: center;
 }
 
-.dashboard-form {
+.dashboardForm {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.dashboard-field label {
+.dashboardField label {
   font-weight: bold;
   display: block;
   margin-bottom: 0.3rem;
 }
 
-.dashboard-field input,
-.dashboard-field textarea {
+.dashboardField input,
+.dashboardField textarea {
   padding: 0.5rem;
   font-size: 1rem;
   width: 100%;
 }
 
-.dashboard-button {
+.dashboardButton {
   padding: 0.6rem;
   background-color: #007bff;
   color: white;
@@ -44,16 +44,16 @@
   cursor: pointer;
 }
 
-.dashboard-button:hover {
+.dashboardButton:hover {
   background-color: #0056b3;
 }
 
-.dashboard-error {
+.dashboardError {
   color: red;
   font-weight: bold;
 }
 
-.dashboard-product {
+.dashboardProduct {
   margin-top: 1.5rem;
   padding: 1rem;
   background: #fff;
