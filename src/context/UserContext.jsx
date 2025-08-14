@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from "react"
 const UserContext = createContext()
 
 const UserProvider = (props) => {
-  const [user, setUser] = useState(true)
+  const [user, setUser] = useState(false)
   const [registeredUser, setRegisteredUser] = useState(false)
   
   const Login = async (username, password) => {

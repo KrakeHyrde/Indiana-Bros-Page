@@ -49,15 +49,6 @@ const ProductsProvider = (props) => {
     }
   }
   const CreateProduct = async (name, price, description) => {
-    if (!name || !price || !description) {
-      setError("Debes completar todos los campos")
-      return
-    }
-
-    if (name.length < 3) {
-      setError("El nombre debe tener al menos 4 caracteres")
-      return
-    }
 
     const newProduct = {
       id: crypto.randomUUID(),
@@ -76,11 +67,7 @@ const ProductsProvider = (props) => {
     });
     
     const data = await response.json()
-    setCreatedProducts(prev => [...prev, newProduct])
-    setProduct(data)
-    setName("")
-    setPrice("")
-    setDescription("")
+    setCreatedProducts(prev => [...prev, data])
     return data;
   }
   const DeleteProduct = async (id) => {
