@@ -10,7 +10,6 @@ import { RouterApp } from './router/RouterApp.jsx'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/responsive.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-ReactDOM.createRoot(document.getElementById('root')).render(<App />)
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

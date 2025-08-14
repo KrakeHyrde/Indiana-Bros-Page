@@ -48,13 +48,13 @@ const ProductsProvider = (props) => {
       console.log(error)
     }
   }
-  const CreateProduct = async (name, price, description) => {
+  const CreateProduct = async (product) => {
 
     const newProduct = {
       id: crypto.randomUUID(),
-      title: name,
-      price: price,
-      description: description,
+      title: product.title,
+      price: product.price,
+      description: product.description,
       category: "",
       image: ""
     };

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import styles from '../styles/dashboard.module.css'
-import { Button, Form, FormControl, FormGroup } from "react-bootstrap"
+import { Button, Form } from "react-bootstrap"
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { useProducts } from "../context/ProductContext";
