@@ -1,4 +1,4 @@
-import '../styles/productos.css'
+import '../styles/productos.module.css'
 import { useEffect, useState, useMemo } from "react"
 import { useAuth } from "../context/UserContext"
 import { Card, CardBody, CardGroup } from 'react-bootstrap'
