@@ -1,0 +1,89 @@
+.pepito{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10; 
+  background-color: #0f0f0d; 
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px;
+  background-color: transparent;
+}
+.button{
+    background-color: #0f0f0d !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 20px  !important;
+    font-size: 16px !important;
+    color: rgb(183, 183, 183) !important;
+    font-weight: bold !important;
+    box-shadow: 0 0 10px #000 !important;
+    transition: all 0.3s ease !important;
+    margin-right: 20px !important;
+    margin-left: 20px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+.button:hover {
+    background-color: #00c2c2;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.navIz {
+    display: flex;
+    align-items: center;  
+    gap: 20px;  
+}
+
+.logo{
+    width: 30px;
+    height: auto;
+    margin-right: 30px;
+}
+
+.hamburgerBtn {
+  display: none;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+
+.offLink {
+  display: block;
+  padding: 12px 8px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .navIz,
+  .navDer,
+  .header > div { 
+    display: none !important;
+  }
+
+  .hamburgerBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .logo {
+    width: 28px;
+  }
+
+
+  .header {
+    padding: 8px 12px;
+  }
+}
