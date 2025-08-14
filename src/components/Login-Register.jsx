@@ -170,6 +170,7 @@ const Login = () => {
     <div className="reLogin">
       <section>
         <h2>Inicia Sesion</h2>
+        <h3>usuario: donero contraseña: ewedon </h3>
         <Formik
           validationSchema={schema}
           onSubmit={handleLogin}
