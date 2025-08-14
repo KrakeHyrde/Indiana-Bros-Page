@@ -1,24 +1,28 @@
-.decision {
-    display: flex;
+.decision  { 
+    display: flex ;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: #7b2e2e; 
+    background-image: url("../assets/FondoInicio.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     gap: 40px;
 }
 
 
 .inicia, .register {
-    background-color: #00e1e1;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 20px;
-    font-size: 16px;
-    color: black;
-    font-weight: bold;
-    box-shadow: 0 0 10px #000;
-    transition: all 0.3s ease;
+    background-color: #00e1e1 !important;
+    border: none !important;
+    padding: 12px 25px !important;
+    border-radius: 20px !important;
+    font-size: 16px !important;
+    color: black !important;
+    font-weight: bold !important;
+    box-shadow: 0 0 10px #000 !important;
+    transition: all 0.3s ease !important;
 }
 
 .inicia:hover,
@@ -36,6 +40,10 @@
     align-items: center;
     justify-content: center;
     background-color: #7b2e2e;
+    background-image: url("../assets/FondoInicio.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     min-height: 100vh;
     padding: 20px;
     color: white;
@@ -50,7 +58,7 @@
 }
 
 section {
-    background-color: #9a3b3b;
+    background-color: #979797;
     padding: 25px;
     border-radius: 10px;
     box-shadow: 0 0 10px #000;
@@ -104,4 +112,21 @@ input {
 button:hover {
     background-color: #00c2c2;
     cursor: pointer;
+}
+
+.resultBox {
+    background-color: #000;
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    .errorText {
+        margin: 0;
+        color: #9a3b3b;
+    }
+    .succesText {
+        margin: 0;
+        color:darkgreen;
+    }
 }

@@ -1,121 +1,237 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import "../styles/loginregi.css"
-import fondo from "../assets/FondoInicio.png"
+import {Button, Form, Spinner} from 'react-bootstrap';
+import {useAuth}  from "../context/UserContext"
+import * as formik from 'formik';
+import * as yup from 'yup';
 
 const LoginRegister = () => {
     return (
-      <>
-        
-        <div className="decision">
-            <img src={fondo} className="fondoIn" alt="fondo del inicio"/>
-            <button className="inicia"><a href="/login">Inicia Secion</a></button>
-            <button className="register"><a href="register">Registrate</a></button>
-        </div>
-      </>
+      <div className="decision" >
+          <Link to="/login"><Button className="inicia">Inicia Sesion</Button></Link>
+          <Link to="/register"><Button className="register">Registrate</Button></Link>
+          
+      </div>
     )
 }
 
 const Register = () => {
-  const [username, setUsername] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const { Register } = useAuth()
+  const nagivate = useNavigate()
+  const { Formik } = formik;
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setError("")
-    setSuccess("")
+  const schema = yup.object().shape({
+    name: yup.string().required(),
+    email: yup.string().min(3, 'must be at least 3 characters long').email('must be a valid email').required(),
+    password: yup.string().required(),
+  });
+  
+  const handleSubmit = async (values, { setSubmitting }) => {
+    
+    setIsLoading(true);
 
-    if (!username || !email || !password) {
-      setError("Debes completar todos los campos")
+    const isRegistered= await Register(values.name, values.email, values.password)
+    
+    if (isRegistered) {
+      setIsLoading(false)
+      setSuccess("Usuario creado con éxito")
+      setTimeout(() => {
+        nagivate("/")
+      }, 2000);
+
       return
     }
-
-    const newUser = {
-      username,
-      email,
-      password
-    }
-
-    console.log(newUser)
-    setSuccess("Usuario registrado con éxito")
-
-    setUsername("")
-    setEmail("")
-    setPassword("")
+    setError("El usuario no pudo ser creado")
+    setIsLoading(false)
   }
 
   return (
     <div className="reRegister">
-      <img src={fondo} className="fondoIn" alt="fondo del inicio"/>
       <h1>Registrate</h1>
 
       <section>
         <h2>Hola, bienvenido</h2>
-        
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Username:</label>
-            <input type="text" />
-            <input
-              type="text"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
-            />
-          </div>
-          <div>
-            <label>Correo electrónico:</label>
-            <input type="email" />
-            <input
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-            />
-          </div>
-          <div>
-            <label>Contraseña:</label>
-            <input type="password" />
-            <input
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-          </div>
-          <button>Ingresar</button>
-        </form>
+        <Formik
+          validationSchema={schema}
+          onSubmit={handleSubmit}
+          initialValues={{
+            name: '',
+            email: '',
+            password: '',
+          }}
+        >
+          {({ handleSubmit, handleChange, handleBlur, touched, values, errors }) => (
 
+            <Form className="m-5" noValidate  onSubmit={handleSubmit}>
+              <Form.Group className="m-3" controlId="validationUsername">
+                <Form.Label >Username:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="name"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.name}
+                  placeholder="Nombre de usuario"
+                  isInvalid={touched.name && !!errors.name}
+                />
+                <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="m-3" controlId="validationEmail">
+                <Form.Label>Correo electrónico:</Form.Label>
+                <Form.Control
+                  required
+                  type="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
+                  placeholder="Email"
+                  isInvalid={touched.email && !!errors.email}
+                />
+                <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="m-3" controlId="validationPassword">
+                <Form.Label>Contraseña:</Form.Label>
+                <Form.Control
+                  required
+                  type="password"
+                  name="password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  isInvalid={touched.password && !!errors.password}
+                />
+                <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+              </Form.Group>
+              <Button type="submit">Registrar</Button>
+            </Form>
+          )}
+        </Formik>
+        
         {
-          error && <p style={{ color: "red" }}>{error}</p>
+          isLoading &&
+          <div className='d-flex justify-content-center item-center mb-3'> 
+            <Spinner animation="grow" role="status"></Spinner>
+          </div>
         }
         {
-          success && <p style={{ color: "green" }}>{success}</p>
+          error && 
+          <div className='resultBox'>
+            <p className="errorText">{error}</p>
+          </div> 
+        }
+        {
+          success && 
+          <div className='resultBox' >
+            <p className="succesText">{success}</p>
+          </div>
         }
       </section>
     </div>
   )
 }
 
-const Login = () =>{
-    return(
-        <div className="reLogin">
-          <img src={fondo} className="fondoIn" alt="fondo del inicio"/>
-            <h1>Inicia sesión</h1>
-            <section>
-                <form>
-                <div>
-                    <label>Correo electrónico:</label>
-                    <input type="email" />
-                </div>
-                <div>
-                    <label>Contraseña:</label>
-                    <input type="password" />
-                </div>
-                <button>Ingresar</button>
-                </form>
-            </section>
-        </div>
-    )
+const Login = () => {
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [isLoading, setIsLoading ] = useState(false); 
+  const { Login } = useAuth()
+  const { Formik } = formik;
+  const nagivate = useNavigate()
+  const schema = yup.object().shape({
+    username: yup.string().min(3, 'must be at least 3 characters long').required(),
+    password: yup.string().min(6, 'must be at least 6 characters long').required(),
+  });
+  
+  const handleLogin = async (values, { setSubmitting }) => {
+    
+    setError("")
+    setSuccess("")
+    setIsLoading(true)
+    
+    const isLogin = await Login(values.username, values.password)
+
+    if (isLogin) {
+      setSuccess("Usuario logeado con éxito")
+      setTimeout(() => {
+        nagivate("/")
+      }, 2000);
+      return
+    }
+    setError("El usuario no existe")
+    setIsLoading(false)
+  }
+
+  return (
+    <div className="reLogin">
+      <section>
+        <h2>Inicia Sesion</h2>
+        <Formik
+          validationSchema={schema}
+          onSubmit={handleLogin}
+          initialValues={{
+            username: '',
+            password: '',
+          }}
+        >
+          {({ handleSubmit, handleChange, handleBlur, touched, values, errors }) => (
+          <Form className='m-5' onSubmit={handleSubmit} noValidate>
+            <Form.Group className="m-3" controlId="validationUsername">
+              <Form.Label>Nombre de usuario:</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="username"
+                placeholder="username"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.username} 
+                isInvalid={touched.password && !!errors.password}
+              />
+              <Form.Control.Feedback type="invalid">{errors.username}</Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group className="m-3" controlId="validationPassword">
+              <Form.Label>Contraseña:</Form.Label>
+              <Form.Control
+                required
+                type="password"
+                name="password"
+                placeholder="password"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password} 
+                isInvalid={touched.password && !!errors.password}
+
+              />
+              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            </Form.Group>
+            <Button type="submit">Ingresar</Button>
+          </Form>)}
+        </Formik>
+        {
+          isLoading && 
+          <div className='d-flex justify-content-center item-center m-3'>
+            <Spinner animation="grow" role="status"/>
+          </div>
+        }
+        {
+          error && 
+          <div className='resultBox'>
+            <p className="errorText">{error}</p>
+          </div> 
+        }
+        {
+          success && 
+          <div className='resultBox' >
+            <p className="succesText">{success}</p>
+          </div>
+        }
+      </section>
+    </div>
+  )
 }
 export {LoginRegister, Register, Login}
